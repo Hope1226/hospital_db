@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS medical_histories_treatments (
 );
 
 CREATE TABLE IF NOT EXISTS invoices (
-    id INT GENERATED ALWAYS AS IDENTITY,
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     total_amount DECIMAL,
     generated_at TIMESTAMP,
     payed_at TIMESTAMP,
@@ -45,5 +45,20 @@ CREATE TABLE IF NOT EXISTS invoices (
     CONSTRAINT fk_medical_histories_invoices
         FOREIGN KEY(med_history_id)
             REFERENCES medical_histories(id)
+);
+
+CREATE TABLE IF NOT EXISTS  invoice_items (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    unit_price DECIMAL,
+    quantity INT,
+    total_price BIGINT GENERATED ALWAYS AS (unit_price * quantity) STORED,
+    invoice_id INT,
+    treatment_id INT,
+    CONSTRAINT fk_invoices_invoices_items
+        FOREIGN KEY (invoice_id)
+            REFERENCES invoices(id),
+    CONSTRAINT fk_treatments_invoices_items
+        FOREIGN KEY (treatment_id)
+            REFERENCES treatments(id)
 );
 
