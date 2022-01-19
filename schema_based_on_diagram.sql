@@ -36,3 +36,14 @@ CREATE TABLE IF NOT EXISTS medical_histories_treatments (
             REFERENCES treatments(id)
 );
 
+CREATE TABLE IF NOT EXISTS invoices (
+    id INT GENERATED ALWAYS AS IDENTITY,
+    total_amount DECIMAL,
+    generated_at TIMESTAMP,
+    payed_at TIMESTAMP,
+    med_history_id INT,
+    CONSTRAINT fk_medical_histories_invoices
+        FOREIGN KEY(med_history_id)
+            REFERENCES medical_histories(id)
+);
+
